@@ -53,6 +53,9 @@ class TinyBar extends WireData implements Module, ConfigurableModule {
     $info = self::getModuleInfo();
     $pw_version = $this->config->version;
     $css_url = $this->config->urls->TinyBar . 'TinyBar.css';
+    $admin_uri = $this->config->urls->admin;
+    $page_add_uri = $admin_uri . 'page/add/';
+    $page_edit_uri = $admin_uri . 'page/edit/';
 
     $out =  '<link rel="stylesheet" type="text/css" href="' . $css_url . '?v=' . $info['version'] . '"/>';
     $out .= '</body>';
@@ -69,26 +72,26 @@ class TinyBar extends WireData implements Module, ConfigurableModule {
 
     $out = '<ul class="tinybar">';
     $out .= '<li><a href="/" class="tinybar-url">' . __('Browse /') . '</a></li>';
-    $out .= '<li><a href="/processwire/page/" class="tinybar-url tinybar-this">' . __('Pages') . '</a></li>';      
+    $out .= '<li><a href="' . $admin_uri . 'page/" class="tinybar-url tinybar-this">' . __('Pages') . '</a></li>';      
 
-    if ($page_url == '/processwire/page/add/') {
+    if ($page_url == $page_add_uri) {
       $out .= '<li><span class="tinybar-url tinybar-active">' . __('Adding new page under') . ' ' . $page_parent_url . '</span></li>';
-    } else if ($page->url == '/processwire/page/edit/') {
+    } else if ($page->url == $page_edit_uri) {
       $out .= '<li><a href="' . $page_url . '" class="tinybar-url">' . __('Browse') . ' ' . $page_url . '</a></li>';
       $out .= '<li><span class="tinybar-url tinybar-active">' . __('Editing') . ' ' . $page_url . '</span></li>';
     }
 
     if ($page->editable() && !$page->is(Page::statusLocked)) {
-      $out .= '<li><a href="' . $this->config->urls->admin . 'page/edit/?id=' . $this->page->id . '" class="tinybar-edit">' . __('Edit') . '</a></li>';
+      $out .= '<li><a href="' . $admin_uri . 'page/edit/?id=' . $this->page->id . '" class="tinybar-edit">' . __('Edit') . '</a></li>';
     } else if (!$page->editable()) {
       $out .= '<li><span>' . __('(read-only)') . '</span></li>';
     }
 
     if ($page->addable() && !$admin_area) {
-      $out .= '<li><a href="' . $this->config->urls->admin . 'page/add/?parent_id=' . $this->page->id . '" class="tinybar-add">' . __('New page') . '</a></li>';
+      $out .= '<li><a href="' . $admin_uri . 'page/add/?parent_id=' . $this->page->id . '" class="tinybar-add">' . __('New page') . '</a></li>';
     }
 
-    $out .= '<li class="tinybar-logout"><a href="' . $this->config->urls->admin . 'login/logout/' . '">' . __('Logout') . '</a></li>';
+    $out .= '<li class="tinybar-logout"><a href="' . $admin_uri . 'login/logout/' . '">' . __('Logout') . '</a></li>';
     $out .= '<li class="tinybar-pw-version"><span>' . $pw_version . '</span></li>';
     $out .= '</ul>';
     $out .= '</body>';
