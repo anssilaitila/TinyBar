@@ -38,8 +38,8 @@ class TinyBar extends WireData implements Module, ConfigurableModule {
 
   public function __construct() {
     foreach(self::getDefaultData() as $key => $value) {
-		  $this->$key = $value;
-	  }
+      $this->$key = $value;
+    }
   }
 
   public function init() {
